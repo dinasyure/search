@@ -6,17 +6,92 @@
         <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script src="https://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+        <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=44d1b3004b74505984ae8c166eea87e1"></script>
+        <style>
+            #list img{width:50px;}
+            #list {margin-top:10px; margin-bottom:10px;}
+            #list li {padding-left: 5px;}
+            #sub {background: #F7F3F3}
+            .info {text-align:center;}
+            .info h5 {text-align:right; font-style: italic;}
+            .info p {text-align:left; border:solid 1px rgb(175, 174, 174); border-radius: 5px; padding:5px;}
+            #address {font-size: 14px; font-weight: bold;}
+            #roadAddress {font-size: 14px; font-weight: bold;}
+            #phone {color:blue; font-size: 12px;}
+            #map {border:gray solid 1px; margin-top: 10px;}
+
+        </style>
     </head>
     <body>
-        <div data-role="page">
-            <div data-role="header" data-theme="d">
+        <!--지역목록 페이지-->
+        <div data-role="page" id="main">
+            <div data-role="header" data-theme="d" data-position="fixed">
                 <a href="index.html" target="_self" data-icon="home" data-iconpos="notext">HOME</a>
                 <h2>지역검색</h2>
             </div>
             <div data-role="content">
-               
+                <input type="text" id="txtQuery" value="반올림피자 인천"/>
+                <ul data-role="listview" id="list"></ul>
+                <script id="temp" type="text/x-handlebars-template">
+                    {{#each documents}}
+                        <li>
+                            <a href="#sub" address="{{address_name}}" roadAddress="{{road_address_name}}" phone="{{phone}}" x="{{x}}" y="{{y}}">{{{place_name}}}</a>
+                        </li>
+                    {{/each}}
+                </script>
+                <div data-role="controlgroup" data-type="horizontal">
+                    <input type="button" id="btnTop" value="위로" data-icon="arrow-u"/>             
+                    <input type="button" id="btnMore" value="더보기" data-icon="plus"/>
+                </div>
             </div>
-            <div data-role="footer" data-theme="d"><h2>인천일보아카데미 이순신</h2></div>
+            <div data-role="footer" data-theme="d" data-position="fixed">
+                <h2>인천일보아카데미 이순신</h2>
+            </div>
         </div>
+        <!--지역정보 페이지-->
+        <div data-role="page" id="sub">
+            <div data-role="header" data-theme="d" data-position="fixed">
+                <a href="index.html" target="_self" data-icon="home" data-iconpos="notext">HOME</a>
+                <h2>지역검색</h2>
+                <a href="#main" target="_self" data-icon="back" data-iconpos="notext"></a>
+            </div>
+            <div data-role="content">               
+                <div id="address"></div>
+                <div id="roadAddress"></div>
+                <div id="phone"></div>
+                <div id="map" style="width:400px;height:400px;"></div>
+            </div>
+            <div data-role="footer" data-theme="d" data-position="fixed">
+                <h2>인천일보아카데미 이순신</h2>
+            </div>
+        </div>   
     </body>
+    <script>
+        var url="https://dapi.kakao.com/v2/local/search/keyword.json";
+        $("#list").on("click","a",function(){
+            var address=$(this).attr("address");
+            var roadAddress=$(this).attr("roadAddress");
+            var phone=$(this).attr("phone");
+            $("#address").html("지번: " + address);
+            $("#roadAddress").html("도로명: " + roadAddress);
+            $("#phone").html(phone);            
+            var x=$(this).attr("x");
+            var y=$(this).attr("y");
+            getMap(x, y);                        
+        });
+        function getMap(x, y){
+            var container = document.getElementById('map');            
+		    var options = {
+			center: new kakao.maps.LatLng(y, x),
+			level: 3            
+		    };            
+		    var map = new kakao.maps.Map(container, options);            
+            var markerPosition  = new kakao.maps.LatLng(y, x);            
+            var marker = new kakao.maps.Marker({
+                position: markerPosition
+            });            
+            marker.setMap(map);            
+        }        
+    </script>
+    <script src="script.js"></script>
 </html>

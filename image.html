@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta name="viewport" content="initial-scale=1, maximum-scale=1"/>
-        <title>도서검색</title>
+        <title>이미지검색</title>
         <link rel="stylesheet" href="https://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
         <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script src="https://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
@@ -14,25 +14,26 @@
             .info {text-align:center;}
             .info h5 {text-align:right; font-style: italic;}
             .info p {text-align:left; border:solid 1px rgb(175, 174, 174); border-radius: 5px; padding:5px;}
+            .ui-block-a{border:solid black 1px;}
+            .ui-block-b{border:solid black 1px;}
         </style>
     </head>
     <body>
-        <!--도서목록 페이지-->
+        <!--이미지목록 페이지-->
         <div data-role="page" id="main">
             <div data-role="header" data-theme="d" data-position="fixed">
                 <a href="index.html" target="_self" data-icon="home" data-iconpos="notext">HOME</a>
-                <h2>도서검색</h2>
+                <h2>이미지검색</h2>
             </div>
             <div data-role="content">
-                <input type="text" id="txtQuery" value="jquery"/>
-                <ul data-role="listview" id="list"></ul>
+                <input type="text" id="txtQuery" value="아이유"/>
+                <div id="list" style="overflow:hidden;padding:5px;"></div>
                 <script id="temp" type="text/x-handlebars-template">
                     {{#each documents}}
-                        <li>
-                            <a href="#sub" title="{{title}}" contents="{{contents}}" price="{{price}}원" authors="{{authors}}"><img src="{{thumbnail}}"/>{{{title}}}</a>
-                        </li>
+                        <div style="float:left"><a href="{{image_url}}" target="_blank"><img src="{{thumbnail_url}}"/></a></div>                      
                     {{/each}}
                 </script>
+                
                 <div data-role="controlgroup" data-type="horizontal">
                     <input type="button" id="btnTop" value="위로" data-icon="arrow-u"/>             
                     <input type="button" id="btnMore" value="더보기" data-icon="plus"/>
@@ -42,19 +43,16 @@
                 <h2>인천일보아카데미 이순신</h2>
             </div>
         </div>
-        <!--도서정보 페이지-->
+        <!--이미지정보 페이지-->
         <div data-role="page" id="sub">
             <div data-role="header" data-theme="d" data-position="fixed">
                 <a href="index.html" target="_self" data-icon="home" data-iconpos="notext"></a>
-                <h2>도서정보</h2>
+                <h2>이미지정보</h2>
                 <a href="#main" target="_self" data-icon="back" data-iconpos="notext"></a>
             </div> 
-            <div data-role="content">
+            <div data-role="content">               
                 <div class="info">
-                    <img src="" id="image" width=150>
-                    <h2 id="title"></h2>
-                    <h5 id="authors"></h5>
-                    <p id="contents"></p>
+                    
                 </div>
             </div>            
             <div data-role="footer" data-theme="d" data-position="fixed" data-mini="true">
@@ -63,7 +61,7 @@
         </div>
     </body>
     <script>
-        var url="https://dapi.kakao.com/v3/search/book?target=title";        
+        var url="https://dapi.kakao.com/v2/search/image";
     </script>
     <script src="script.js"></script>
 </html>
