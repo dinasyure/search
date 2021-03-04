@@ -1,4 +1,3 @@
-var size=10;
 getList();
 $("#list").on("click","a",function(){
     var title=$(this).attr("title");
